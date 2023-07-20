@@ -1,9 +1,10 @@
 import React from "react";
+import { Label } from "./WalletAddress.styled";
 
 function WalletAddress() {
   return (
     <div>
-      <label>Wallet Address:</label>
+      <Label>Wallet Address:</Label>
       <input type="text" value="0x123abc..." readOnly />
     </div>
   );
