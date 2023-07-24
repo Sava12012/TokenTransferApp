@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Logo from "../Logo/Logo";
-import { HeaderWrapper } from "./Header.styled";
+import { HeaderWrapper, WalletUsers, WalletBalance } from "./Header.styled";
 
 function Header() {
   const [walletAddress, setWalletAddres] = useState("");
@@ -9,7 +9,7 @@ function Header() {
   useEffect(() => {
     getInformationWallet();
     addWalletListener();
-  });
+  }, []);
 
   const connectWallet = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
@@ -59,20 +59,37 @@ function Header() {
     }
   };
 
+  const getDefaultValue = () => {
+    if (!walletAddress || walletAddress.length === 0) {
+      return "0F12d...";
+    }
+    return walletAddress;
+  };
+
   return (
-    <HeaderWrapper>
-      <Logo />
-      <button onClick={connectWallet}>
-        <span>
-          {walletAddress && walletAddress.length > 0
-            ? `Connected: ${walletAddress.substring(
-                0,
-                6
-              )}...${walletAddress.substring(38)}`
-            : "Connect Wallet"}
-        </span>
-      </button>
-    </HeaderWrapper>
+    <>
+      <HeaderWrapper>
+        <Logo />
+        <button onClick={connectWallet}>
+          <span>
+            {walletAddress && walletAddress.length > 0
+              ? `Connected: ${walletAddress.substring(
+                  0,
+                  6
+                )}...${walletAddress.substring(38)}`
+              : "Connect Wallet"}
+          </span>
+        </button>
+      </HeaderWrapper>
+      <WalletUsers>
+        <label>Wallet Address:</label>
+        <input type="text" value={walletAddress} readOnly />
+      </WalletUsers>
+      <WalletBalance>
+        <label>Balance:</label>
+        <input type="text" defaultValue="0" readOnly />
+      </WalletBalance>
+    </>
   );
 }
 
