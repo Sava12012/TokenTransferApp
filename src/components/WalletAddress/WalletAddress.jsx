@@ -5,7 +5,7 @@ function WalletAddress() {
   return (
     <div>
       <Label>Wallet Address:</Label>
-      <input type="text" value="0x123abc..." readOnly />
+      <input type="text" defaultValue="0x123abc..." readOnly />
     </div>
   );
 }

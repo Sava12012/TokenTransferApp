@@ -7,3 +7,4 @@ export const LabelBalance = styled.div`
   align-items: center;
   margin-bottom: 10px;
 `;
+export const InputBallance = styled.input``;

@@ -1,11 +1,11 @@
 import React from "react";
-import { LabelBalance } from "./Balance.styled";
+import { LabelBalance, InputBallance } from "./Balance.styled";
 
 function Balance() {
   return (
     <div>
       <LabelBalance>Balance:</LabelBalance>
-      <input type="text" value="1000" />
+      <InputBallance type="text" defaultValue="0" readOnly />
     </div>
   );
 }
