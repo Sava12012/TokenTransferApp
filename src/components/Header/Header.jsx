@@ -1,10 +1,12 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 import Logo from "../Logo/Logo";
 import { HeaderWrapper, WalletUsers, WalletBalance } from "./Header.styled";
 
 function Header() {
-  const [walletAddress, setWalletAddres] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [balance, setBalance] = useState("");
 
   useEffect(() => {
     getInformationWallet();
@@ -17,7 +19,7 @@ function Header() {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-        setWalletAddres(accounts[0]);
+        setWalletAddress(accounts[0]);
         console.log(accounts[0]);
       } catch (err) {
         console.log(err.message);
@@ -28,14 +30,25 @@ function Header() {
   };
 
   const getInformationWallet = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+    if (
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
+    ) {
       try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
         if (accounts.length > 0) {
-          setWalletAddres(accounts[0]);
+          setWalletAddress(accounts[0]);
           console.log(accounts[0]);
+          //Balance
+          const balance = await window.ethereum.request({
+            method: "eth_getBalance",
+            params: [accounts[0], "latest"],
+          });
+          console.log("balance:", balance);
+          const balanceInEther = ethers.utils.formatEther(balance);
+          setBalance(balanceInEther);
         } else {
           console.log("Connect to MetaMask using the Connect Button");
         }
@@ -50,20 +63,13 @@ function Header() {
   const addWalletListener = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
       window.ethereum.on("accountsChanged", (accounts) => {
-        setWalletAddres(accounts[0]);
+        setWalletAddress(accounts[0]);
         console.log(accounts[0]);
       });
     } else {
-      setWalletAddres("");
+      setWalletAddress("");
       console.log("Please install Metamask");
     }
-  };
-
-  const getDefaultValue = () => {
-    if (!walletAddress || walletAddress.length === 0) {
-      return "0F12d...";
-    }
-    return walletAddress;
   };
 
   return (
@@ -87,7 +93,7 @@ function Header() {
       </WalletUsers>
       <WalletBalance>
         <label>Balance:</label>
-        <input type="text" defaultValue="0" readOnly />
+        <input type="text" value={balance} readOnly />
       </WalletBalance>
     </>
   );
