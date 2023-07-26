@@ -1,8 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import Logo from "../Logo/Logo";
-import { HeaderWrapper, WalletUsers, WalletBalance } from "./Header.styled";
+import {
+  HeaderWrapper,
+  WalletUsers,
+  WalletBalance,
+  BtnConnectWallet,
+} from "./Header.styled";
 
 function Header() {
   const [walletAddress, setWalletAddress] = useState("");
@@ -77,7 +82,7 @@ function Header() {
     <>
       <HeaderWrapper>
         <Logo />
-        <button onClick={connectWallet}>
+        <BtnConnectWallet onClick={connectWallet}>
           <span>
             {walletAddress && walletAddress.length > 0
               ? `Connected: ${walletAddress.substring(
@@ -86,7 +91,7 @@ function Header() {
                 )}...${walletAddress.substring(38)}`
               : "Connect Wallet"}
           </span>
-        </button>
+        </BtnConnectWallet>
       </HeaderWrapper>
       <WalletUsers>
         <label>Wallet Address:</label>

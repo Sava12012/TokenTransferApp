@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form } from "./TransferForm.styled";
+import { Form, BtnTransfer } from "./TransferForm.styled";
 
 function TransferForm() {
   const [accounts, setAccounts] = useState([]);
@@ -61,9 +61,7 @@ function TransferForm() {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-      <button type="button" onClick={handleTransfer}>
-        Transfer
-      </button>
+      <BtnTransfer onClick={handleTransfer}>Transfer</BtnTransfer>
     </Form>
   );
 }
