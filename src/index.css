@@ -19,6 +19,24 @@ body {
   height: 100vh;
 }
 
+@keyframes loading {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loading {
+  animation-name: loading;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;

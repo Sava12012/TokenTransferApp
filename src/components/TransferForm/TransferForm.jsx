@@ -5,6 +5,8 @@ function TransferForm() {
   const [accounts, setAccounts] = useState([]);
   const [recipientAddress, setRecipientAddress] = useState("");
   const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [transferResult, setTransferResult] = useState("");
 
   useEffect(() => {
     getAccount();
@@ -22,6 +24,7 @@ function TransferForm() {
   }
 
   async function handleTransfer() {
+    setLoading(true);
     try {
       const amountWei = (parseFloat(amount) * 1e18).toString(); // Перевести суму в вей
       const txHash = await window.ethereum.request({
@@ -38,9 +41,12 @@ function TransferForm() {
         ],
       });
       console.log("Transaction Hash:", txHash);
+      setTransferResult("The transfer was successfully completed");
     } catch (error) {
       console.error("Error sending transaction:", error);
+      setTransferResult("Error sending transaction");
     }
+    setLoading(false);
   }
 
   return (
@@ -61,7 +67,23 @@ function TransferForm() {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-      <BtnTransfer onClick={handleTransfer}>Transfer</BtnTransfer>
+      <BtnTransfer onClick={handleTransfer} disabled={loading}>
+        {loading ? <span className="loading">Loading...</span> : "Send"}
+      </BtnTransfer>
+      {transferResult && (
+        <p
+          style={{
+            color: "black",
+            marginTop: "20px",
+            backgroundColor: "#e4a4f4",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 25px rgba(255, 0, 130, 0.5)",
+          }}
+        >
+          {transferResult}
+        </p>
+      )}
     </Form>
   );
 }
