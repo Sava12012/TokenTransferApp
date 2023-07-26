@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Logo from "../Logo/Logo";
 import {
@@ -13,19 +12,16 @@ function Hero() {
   const [walletAddress, setWalletAddress] = useState("");
   const [balance, setBalance] = useState("");
 
-  useEffect(() => {
-    getInformationWallet();
-    addWalletListener();
-  }, [walletAddress]);
+  const isMetamaskInstalled =
+    typeof window !== "undefined" && typeof window.ethereum !== "undefined";
 
   const connectWallet = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
+    if (isMetamaskInstalled) {
       try {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
         setWalletAddress(accounts[0]);
-        console.log(accounts[0]);
       } catch (err) {
         console.log(err.message);
       }
@@ -34,27 +30,16 @@ function Hero() {
     }
   };
 
-  const getInformationWallet = async () => {
-    console.log("func is called");
-    if (
-      typeof window !== "undefined" &&
-      typeof window.ethereum !== "undefined"
-    ) {
+  const getWalletInformation = async () => {
+    if (isMetamaskInstalled) {
       try {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
         if (accounts.length > 0) {
           setWalletAddress(accounts[0]);
-          console.log(accounts[0]);
-          //Balance
-          const balance = await window.ethereum.request({
-            method: "eth_getBalance",
-            params: [accounts[0], "latest"],
-          });
-          const balanceInEther = ethers.formatEther(balance);
-          setBalance(Number(balanceInEther).toFixed(5));
-          console.log("balanceInEther:", balanceInEther);
+          const balance = await getWalletBalance(accounts[0]);
+          setBalance(Number(balance).toFixed(5));
         } else {
           console.log("Connect to MetaMask using the Connect Button");
         }
@@ -66,16 +51,37 @@ function Hero() {
     }
   };
 
-  const addWalletListener = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-      window.ethereum.on("accountsChanged", (accounts) => {
-        setWalletAddress(accounts[0]);
-        console.log(accounts[0]);
+  const getWalletBalance = async (walletAddress) => {
+    try {
+      const balance = await window.ethereum.request({
+        method: "eth_getBalance",
+        params: [walletAddress, "latest"],
       });
-    } else {
-      setWalletAddress("");
+      return ethers.formatEther(balance);
+    } catch (err) {
+      console.log(err.message);
+      return "0";
+    }
+  };
 
-      console.log("Please install Metamask");
+  useEffect(() => {
+    getWalletInformation();
+    if (isMetamaskInstalled) {
+      addWalletListener();
+    }
+  }, []);
+
+  const addWalletListener = () => {
+    if (isMetamaskInstalled) {
+      window.ethereum.on("accountsChanged", async (accounts) => {
+        if (accounts.length > 0) {
+          setWalletAddress(accounts[0]);
+          const balance = await getWalletBalance(accounts[0]);
+          setBalance(Number(balance).toFixed(5));
+        } else {
+          setWalletAddress("");
+        }
+      });
     }
   };
 
