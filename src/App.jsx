@@ -1,12 +1,12 @@
 import React from "react";
-import Header from "./components/Header/Header";
+import Hero from "./components/Hero/Hero";
 import TransferForm from "./components/TransferForm/TransferForm";
 import { ContentWrapper } from "./App.styled";
 
 function App() {
   return (
     <>
-      <Header />
+      <Hero />
       <ContentWrapper>
         <TransferForm />
       </ContentWrapper>

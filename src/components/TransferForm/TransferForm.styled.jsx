@@ -7,6 +7,9 @@ export const Form = styled.div`
   align-items: center;
   width: 100%;
   gap: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
   label {
     text-shadow: 3px 5px 6px #ff0081;
     font-size: 1em;

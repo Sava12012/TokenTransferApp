@@ -1,22 +1,22 @@
 import React from "react";
 import { useEffect, useState } from "react";
-// import { ethers } from "ethers";
+import { ethers } from "ethers";
 import Logo from "../Logo/Logo";
 import {
   HeaderWrapper,
   WalletUsers,
   WalletBalance,
   BtnConnectWallet,
-} from "./Header.styled";
+} from "./Hero.styled";
 
-function Header() {
+function Hero() {
   const [walletAddress, setWalletAddress] = useState("");
   const [balance, setBalance] = useState("");
 
   useEffect(() => {
     getInformationWallet();
     addWalletListener();
-  }, []);
+  }, [walletAddress]);
 
   const connectWallet = async () => {
     if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
@@ -35,6 +35,7 @@ function Header() {
   };
 
   const getInformationWallet = async () => {
+    console.log("func is called");
     if (
       typeof window !== "undefined" &&
       typeof window.ethereum !== "undefined"
@@ -51,10 +52,9 @@ function Header() {
             method: "eth_getBalance",
             params: [accounts[0], "latest"],
           });
-          console.log("balance:", balance);
-          // const balanceInEther = ethers.utils.formatEther(balance);
-          // setBalance(balanceInEther);
-          setBalance(balance);
+          const balanceInEther = ethers.formatEther(balance);
+          setBalance(Number(balanceInEther).toFixed(5));
+          console.log("balanceInEther:", balanceInEther);
         } else {
           console.log("Connect to MetaMask using the Connect Button");
         }
@@ -74,6 +74,7 @@ function Header() {
       });
     } else {
       setWalletAddress("");
+
       console.log("Please install Metamask");
     }
   };
@@ -105,4 +106,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default Hero;
