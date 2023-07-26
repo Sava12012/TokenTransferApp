@@ -73,12 +73,15 @@ function TransferForm() {
       {transferResult && (
         <p
           style={{
-            color: "black",
+            color: "white",
             marginTop: "20px",
-            backgroundColor: "#e4a4f4",
             padding: "20px",
             borderRadius: "8px",
             boxShadow: "0 2px 25px rgba(255, 0, 130, 0.5)",
+            backgroundColor:
+              transferResult === "The transfer was successfully completed"
+                ? "green"
+                : "red",
           }}
         >
           {transferResult}
