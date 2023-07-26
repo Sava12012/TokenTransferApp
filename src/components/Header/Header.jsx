@@ -47,8 +47,9 @@ function Header() {
             params: [accounts[0], "latest"],
           });
           console.log("balance:", balance);
-          const balanceInEther = ethers.utils.formatEther(balance);
-          setBalance(balanceInEther);
+          // const balanceInEther = ethers.utils.formatEther(balance);
+          // setBalance(balanceInEther);
+          setBalance(balance);
         } else {
           console.log("Connect to MetaMask using the Connect Button");
         }
