@@ -26,14 +26,14 @@ function TransferForm() {
   async function handleTransfer() {
     setLoading(true);
     try {
-      const amountWei = (parseFloat(amount) * 1e18).toString(); // Перевести суму в вей
+      const amountWei = (parseFloat(amount) * 1e18).toString();
       const txHash = await window.ethereum.request({
         method: "eth_sendTransaction",
         params: [
           {
             from: accounts[0],
             to: recipientAddress,
-            value: amountWei, // Юзаю конвертовану суму у вей
+            value: amountWei,
             gasLimit: "0x5028",
             maxPriorityFeePerGas: "0x3b9aca00",
             maxFeePerGas: "0x2540be400",
